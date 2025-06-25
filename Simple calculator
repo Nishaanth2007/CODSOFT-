@@ -2,29 +2,29 @@
 
 int main() {
     double num1, num2, result;
-    char operator;
+    char op;  // Changed from 'operator' to 'op'
 
     printf("Enter first number: ");
     scanf("%lf", &num1);
     printf("Enter second number: ");
     scanf("%lf", &num2);
     printf("Enter operator (+, -, *, /): ");
-    scanf(" %c", &operator);
+    scanf(" %c", &op);  // Changed from '&operator' to '&op'
 
-    switch (operator) {
-        case '+':
+    switch (op) {  // Changed from 'operator' to 'op'
+        case '+': 
             result = num1 + num2;
             printf("%.2lf + %.2lf = %.2lf\n", num1, num2, result);
             break;
-        case '-':
+        case '-': 
             result = num1 - num2;
             printf("%.2lf - %.2lf = %.2lf\n", num1, num2, result);
             break;
-        case '*':
+        case '*': 
             result = num1 * num2;
             printf("%.2lf * %.2lf = %.2lf\n", num1, num2, result);
             break;
-        case '/':
+        case '/': 
             if (num2 != 0) {
                 result = num1 / num2;
                 printf("%.2lf / %.2lf = %.2lf\n", num1, num2, result);
@@ -32,7 +32,7 @@ int main() {
                 printf("Error: Division by zero is not allowed.\n");
             }
             break;
-        default:
+        default: 
             printf("Error: Invalid operator.\n");
             break;
     }
