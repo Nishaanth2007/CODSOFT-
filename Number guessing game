@@ -1,23 +1,37 @@
-# import random
+include <iostream>
+#include <random>
+#include <limits>
 
-def guess_the_number():
-    number_to_guess = random.randint(1, 100)
-    print("Welcome to the Guess the Number Game!")
-    print("I'm thinking of a number between 1 and 100.")
+void guess_the_number() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 100);
+    int number_to_guess = dis(gen);
 
-    while True:
-        try:
-            guess = int(input("Take a guess: "))
-            if guess < number_to_guess:
-                print("Too low! Try again.")
-            elif guess > number_to_guess:
-                print("Too high! Try again.")
-            else:
-                print("Congratulations! You guessed the number!")
-                break
-        except ValueError:
-            print("Please enter a valid integer.")
+    std::cout << "Welcome to the Guess the Number Game!" << std::endl;
+    std::cout << "I'm thinking of a number between 1 and 100." << std::endl;
 
-if __name__ == "__main__":
-    guess_the_number()
-    
+    while (true) {
+        int guess;
+        std::cout << "Take a guess: ";
+        if (std::cin >> guess) {
+            if (guess < number_to_guess) {
+                std::cout << "Too low! Try again." << std::endl;
+            } else if (guess > number_to_guess) {
+                std::cout << "Too high! Try again." << std::endl;
+            } else {
+                std::cout << "Congratulations! You guessed the number!" << std::endl;
+                break;
+            }
+        } else {
+            std::cout << "Please enter a valid integer." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+}
+
+int main() {
+    guess_the_number();
+    return 0;
+}
