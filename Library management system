@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+const int LOAN_DAYS = 14;
+const double FINE_PER_DAY = 0.50;
+
+struct Book {
+    int id;
+    string title;
+    string author;
+    bool available = true;
+};
+
+struct Transaction {
+    int bookId;
+    int daysKept;
+    bool returned = false;
+    double fine = 0.0;
+};
+
+vector<Book> books = {
+    {1, "Harry Potter", "J.K. Rowling", true},
+    {2, "The Hobbit", "J.R.R. Tolkien", true}
+};
+
+vector<Transaction> transactions;
+
+void searchBook() {
+    string query;
+    cout << "Enter title or author: ";
+    cin.ignore();
+    getline(cin, query);
+
+    for (auto& book : books) {
+        if (book.title.find(query) != string::npos ||
+            book.author.find(query) != string::npos) {
+            cout << "ID: " << book.id << " | " << book.title 
+                 << " by " << book.author 
+                 << " | " << (book.available ? "Available" : "Checked out") << endl;
+        }
+    }
+}
+
+void checkoutBook() {
+    int id;
+    cout << "Enter Book ID to checkout: ";
+    cin >> id;
+    for (auto& book : books) {
+        if (book.id == id && book.available) {
+            book.available = false;
+            transactions.push_back({id, 0});
+            cout << "Book checked out.\n";
+            return;
+        }
+    }
+    cout << "Book not available.\n";
+}
+
+void returnBook() {
+    int id, days;
+    cout << "Enter Book ID to return: ";
+    cin >> id;
+    cout << "Enter number of days kept: ";
+    cin >> days;
+
+    for (auto& book : books)
+        if (book.id == id)
+            book.available = true;
+
+    for (auto& t : transactions) {
+        if (t.bookId == id && !t.returned) {
+            t.returned = true;
+            t.daysKept = days;
+            if (days > LOAN_DAYS)
+                t.fine = (days - LOAN_DAYS) * FINE_PER_DAY;
+            cout << "Book returned. Fine: $" << t.fine << endl;
+            return;
+        }
+    }
+    cout << "Transaction not found.\n";
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n1. Search Book\n2. Checkout Book\n3. Return Book\n4. Exit\nChoose: ";
+        cin >> choice;
+        switch (choice) {
+            case 1: searchBook(); break;
+            case 2: checkoutBook(); break;
+            case 3: returnBook(); break;
+        }
+    } while (choice != 4);
+    return 0;
+}
